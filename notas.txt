@@ -161,4 +161,4 @@ Antes de tudo faz o git pull para garantir que est√° sincronizado com o reposit√
 
 03. Faz o push para sincronizar
 
-	fit push origin main
+	git push origin main
