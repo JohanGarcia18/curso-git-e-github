@@ -1,0 +1,164 @@
+*************************************************************GIT****************************************************************
+
+Antes de tudo deve ser feito a configuração do Git para lhe associar um nome e email: 20:43
+
+	git config --global user.name "Johan Garcia"
+	gir config --global user.email "johangarciadeoliveira123@outlook.com.br"
+
+Mostra a versão instalada do git: 
+	git --version
+
+Limpa o terminal:
+	clear
+
+Inicializa (cria) um repositório (importante antes você navegar até o diretório escolhido):
+	git init
+
+Mostra o status (mostra os arquivos que foram modificados e não estão preparados para commit):
+	git status
+
+Prepara para commit:
+	git add index.html
+
+Prepara todos os arquivos para commit:
+	git add .
+
+Remove da preparação para commit:
+	git rm --cached index.html
+
+Faz o commit (não é necessário o 'm', serve apenas para colocar uma mensagem):
+	git commit -m "Primeira versão"
+
+Ver todos os commit já feitos (na exibição terá o id do commit que serve para voltar para aquela versão - 
+digita "q" para sair do log caso ele fique com mostrando ":"):
+	git log
+
+Para ignorar arquivos na hora do commit (caso tenha arquivos que não devem ser commitados);
+	01: No diretório de trabalho deve ser criado o arquivo ".gitignore"
+	02: Dentro deste, basta simplesmente escrever o nome dos arquivos a serem ignorados
+	03: Depois esse mesmo arquivo deve ser commitado
+
+BRANCHES: é um ambiente, seja de produção (master) ou de desenvolvimento (development). É como 
+	      'pequenas pastinhas' dentro de nosso repositório.
+
+O FLUXO DE UM BRANCH É: 
+	1. Se tem uma tarefa, cria um branch dela
+	2. Depois cria um ambiente separado
+	3. Manda para o ambiente de desenvolvimento (Development)
+	4. E por último, depois de pronto (testado e funcionando) manda para o branch Master
+
+Obs: não se pode mandar direto para o master para não arriscar a aplicação, sendo que um código 
+defeituoso poderia acabar "quebrando" esta.
+
+Mostra as branches de um repositório:
+	git branch
+
+Cria uma nova Branch (como nome que desejar):
+	git branch development
+
+Para mudar a branch atual (usa o checkout e o nome da branch):
+	git checkout development
+
+Ex: 
+depois de já criado a branch development, caso surja uma nova tarefa (cadastrar um cliente), iremos: 
+    - criar uma branch para esta tarefa e depois trocar a branch atual para ela
+    - criar um diretório para essa tarefa e dentro seus arquivos de trabalho 
+
+	git branch cadastro-cliente
+	git checkout cadastro-cliente
+	
+Obs: quando trocar de uma branch para outra, TODOS os arquivos commitados para a branch anterior
+          irão irão sumir (tanto do vscode quanto do SO), pois foi trocado o ambiente de desenvolvimento!
+         Caso todos os seus commits para uma certa branch estejem dentro de um diretório, este sumirá.
+
+Para fazer a junção de branches integrando uma a outra (colocando os arquivos de uma em outra):
+01. trocar a branch atual para a que você quer adicionar a branch anterior
+Ex:
+	git checkout development
+	git merge cadastro-clente
+
+Nesse momento é como se fizesse uma cópia dos commits que estão na branch 'cadastro-clente'
+para a branch 'development'. Futuramente faria uma outra integração para colocar na 'mastes', veja:
+	git checkout master
+	git merge development
+
+Obs: através do git log pode-se ver os commits após integrado.
+
+*********************************************************GITHUB***************************************************************
+
+			   *Integração do repositório local ao remoto*
+
+GITHUB: é o 'local' (repositório remoto) onde é guardado os repositórios Gits exemplificados anteriormente, 
+                pois estes são locais. O repositório ficará visível para todos os desenvolvedores e com um melhor visual.
+
+São 3 passos:
+
+====> PASSO 01:
+Para adicionar o repositório remoto no repositório local (o end abaixo é de acordo com seu repositorio remoto):
+	
+	git remote add origin https://github.com/JohanGarcia18/curso-git-e-github.git
+
+	Obs: adicionou um repositório remoto (git remote add) com o nome "origen", de um endereço do github.
+
+Para verificar quais os repositórios remotos adicionados (comando semelhante ao branch):
+
+	git remote
+
+====> PASSO 02:
+Para renomear (usa o -M) o nome da branch para "main" (pois é um padrão do Github):
+	
+	git branch -M main
+
+====> PASSO 03 (nesse passo será necessário linkar o git local com o github, aparece uma tela de login):
+Para fazer o deployment ("puxar", "upload") tudo que está no repositório local ("main") para o remoto ("origin"):
+
+	git push -u origin main
+
+Obs: deve ser feito o deploy também das outras branches do projeto, veja:
+
+	git push origin development
+	git push origin cadastro-cliente
+
+Obs2: essa flag "-u" não é obrigatória, serve para automatizar o comando push. Se for usada, então na próxima
+            vez só colocar "git push" já vai ser a mesma coisa que coolocar o comando completo de quando linkou. 
+            Neste caso, colocar "git push" seria o mesmo que tá colocando "git push origin main".
+
+UM EXEMPLO DE SE TIVESSE UM NOVO INTEGRANTE NA EQUIPE (PROGRAMADOR):
+
+Para clonar (baixar ele inteiro) um repositório remoto (deve estar público ou ter a permissão):
+Obs: antes vá para o diretório onde deseja clonar o repositório e abra o git bash. Depois: 
+	
+	git clone https://github.com/JohanGarcia18/curso-git-e-github
+
+Depois faz as alterações que desejar utilizando o aprendido com manipulação de git (repositório local).
+Ex: cria novos arquivos (pode ou não está dentro de um diretório), e depois faz o commit de tudo para 
+       a branch 'main' depois de pronto. Em seguida basta fazer o push:
+
+	git push origin main
+
+ENTÃO O QUE ACONTECE COM OS OUTROS INTEGRANTES PARA SE ATUALIZAREM???
+
+Para atualizar TUDO do repositório local (presta atenção na branch atual):
+	
+	git pull
+
+Obs: caso queira atualizar apenas uma branch (coloca origin e o nome da branch):
+Antes é necessário fazer um checkout para alterar a branch atual (os arquivos atualizados serão salvos 
+na branch atual)!
+
+	git pull origin main
+
+Para remover um diretório do github pelo git bash:
+Antes de tudo faz o git pull para garantir que está sincronizado com o repositório remoto
+
+01. Primeiro remove localmente
+
+	git rm -r nomePasta
+
+02. Faz o commit
+
+	git commit -m "Removendo a pasta"
+
+03. Faz o push para sincronizar
+
+	fit push origin main
